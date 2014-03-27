@@ -52,7 +52,7 @@ def net_rp():
         iface = {}
         iface['rx_bytes'] = int(tmp[1])
         iface['tx_bytes'] = int(tmp[9])
-        if iface['rx_bytes'] == 0 and ifaces['tx_bytes'] == 0:
+        if iface['rx_bytes'] == 0 and iface['tx_bytes'] == 0:
             continue
         iface['ip']     = get_ip_address(tmp[0])
         iface['mac']    = open('/sys/class/net/' + tmp[0] + '/address').read().strip()
