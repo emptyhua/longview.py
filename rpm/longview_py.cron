@@ -1,0 +1,1 @@
+*/1 * * * * root /opt/longview_py/longview.py > /tmp/longview_py.lastlog 2>&1
