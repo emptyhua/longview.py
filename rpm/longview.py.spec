@@ -1,6 +1,6 @@
 Name:	    longview.py	
 Version:	0.0.1
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	longview.py
 
 License:    BSD

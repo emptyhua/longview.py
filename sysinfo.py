@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import sys, os, glob
+import sys, os, glob, time
 
 class Report:
     def __init__(self, config):
@@ -21,6 +21,7 @@ class Sysinfo:
 
     def report(self):
         report = {'errors':[]}
+        report['create_time'] = int(time.time())
         for py in glob.glob(os.path.dirname(__file__) + '/mod/*.py'):
             mod_name = os.path.basename(py).replace('.py', '')
             if mod_name == '__init__':

@@ -21,11 +21,7 @@ if __name__ == '__main__':
         print >> sys.stderr, 'can\'t read conf', config_path
         sys.exit(1)
 
-    for key in ('report_url',):
-        if not cfg.get_str(key):
-            print >> sys.stderr, 'can\'t get %s from %s' % (key, config_path)
-            sys.exit(1)
-
+    
     print >>sys.stderr, 'config ->', json.dumps(cfg.pool, indent=2)
 
     try:
@@ -36,18 +32,14 @@ if __name__ == '__main__':
     
     print >>sys.stderr, 'report ->', json.dumps(report, indent=2)
 
+    if not cfg.get_str('report_url'):
+        print >> sys.stderr, 'can\'t get report_url from %s' % config_path
+        sys.exit(1)
+
     report_data     = json.dumps(report)
 
     if cfg.get_bool('report_gzip'): 
-        import base64
-        import gzip
-        import StringIO
-        report_stream   = StringIO.StringIO()
-        gzipper         = gzip.GzipFile(fileobj=report_stream, mode='w')
-        gzipper.write(report_data)
-        gzipper.close()
-        report_data     = report_stream.getvalue()
-        report_data     = base64.b64encode(report_data)
+        report_data     = report_data.encode('zlib')
     
     post_data = {}
 
@@ -82,5 +74,6 @@ if __name__ == '__main__':
 
     if response and response.getcode() == 200:
         print >>sys.stderr, 'report success'
+        print >>sys.stderr, response.read()
     else:
         sys.exit(1)
