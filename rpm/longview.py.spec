@@ -2,12 +2,12 @@ Name:	    longview.py
 Version:	0.0.1
 Release:	3%{?dist}
 Summary:	longview.py
-
+Group:      Common
 License:    BSD
 BuildArch:  noarch
 BuildRoot:	%(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
-Requires:	python >= 2.6, MySQL-python
+Requires:	python >= 2.4, MySQL-python
 
 %description
 longview.py
