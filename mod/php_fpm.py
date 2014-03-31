@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, urllib2
+import os, sys, urllib2, socket
 try:
     import json
 except:
@@ -33,10 +33,11 @@ def _get(report, index):
         if sys.version_info < (2, 6):
             old_timeout = socket.getdefaulttimeout()
             socket.setdefaulttimeout(3)
-            response = urllib2.urlopen(request)
+            response = urllib2.urlopen(fpm_status)
         else:
-            response = urllib2.urlopen(request, timeout=3)
+            response = urllib2.urlopen(fpm_status, timeout=3)
     except Exception, e:
+        response = None
         info['error'] = 'can\'t get %s %s' % (fpm_status, str(e))
 
     if sys.version_info < (2, 6):

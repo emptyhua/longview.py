@@ -23,6 +23,7 @@ def get(report):
         else:
             response = urllib2.urlopen(request, timeout=3)
     except Exception, e:
+        response = None
         report.error('can\'t get %s %s' % (nginx_status, str(e)))
 
     if sys.version_info < (2, 6):
