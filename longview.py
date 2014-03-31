@@ -60,6 +60,7 @@ if __name__ == '__main__':
     
     post_data_encode = urllib.urlencode(post_data)
 
+    print >>sys.stderr, 'post data size', len(post_data_encode)
     request = urllib2.Request(cfg.get_str('report_url'), post_data_encode)
     request.add_header('Content-type', 'application/x-www-form-urlencoded')
     

@@ -41,4 +41,4 @@ def get(report):
         ifaces.append(iface) 
 
     if len(ifaces):
-        report.data('ifacee', ifaces)
+        report.data('ifaces', ifaces)
