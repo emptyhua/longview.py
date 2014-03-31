@@ -1,14 +1,36 @@
 #!/usr/bin/env python
 
-import os, urllib2
+import os, urllib2, sys, socket
 
 def get(report):
-    nginx_status = report.config.get_str('nginx_status', 'http://127.0.0.1/nginx_status')
-    try:
-        response = urllib2.urlopen(nginx_status, timeout=3)
-    except Exception as e:
-        report.error('can\'t get %s' % nginx_status)
+    nginx_status    = report.config.get_str('nginx_status')
+    if not nginx_status:
+        report.hide()
         return
+
+    headers = {}
+    user_agent      = report.config.get_str('nginx_ua')
+    if user_agent:
+        report.debug('use agent %s' % user_agent)
+        headers['User-Agent'] = user_agent
+    request = urllib2.Request(nginx_status, None, headers)
+
+    try:
+        if sys.version_info < (2, 6):
+            old_timeout = socket.getdefaulttimeout()
+            socket.setdefaulttimeout(3)
+            response = urllib2.urlopen(request)
+        else:
+            response = urllib2.urlopen(request, timeout=3)
+    except Exception, e:
+        report.error('can\'t get %s %s' % (nginx_status, str(e)))
+
+    if sys.version_info < (2, 6):
+        socket.setdefaulttimeout(old_timeout)
+
+    if not response:
+        return
+
     text = response.read()
 
     server = response.info().getheader('Server')

@@ -17,7 +17,7 @@ def get(report):
                 user    += int(tmp[1]) + int(tmp[2])
                 system  += int(tmp[3])
                 wait    += int(tmp[5])
-    except IOError as e:
+    except IOError:
         report.error('can not open /proc/stat')
         return
 

@@ -18,7 +18,7 @@ def get(report):
                 cpu_num += 1
             elif line.startswith('model name') and cpu_type is None:
                 cpu_type = line.split(':')[1].strip()
-    except IOError as e:
+    except IOError:
         report.error('can not open /proc/cpuinfo')
 
     if cpu_num > 0:
@@ -28,5 +28,5 @@ def get(report):
 
     try:
         report.data('uptime', int(float(open('/proc/uptime').read().split(' ')[0])))
-    except IOError as e:
+    except IOError:
         report.error('can not open /proc/uptime')

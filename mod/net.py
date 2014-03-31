@@ -15,7 +15,7 @@ def get_ip_address(ifname):
 def get(report):
     try:
         net_dev_fp = open('/proc/net/dev', 'r')
-    except IOError as e:
+    except IOError:
         report.error('can not open /proc/net/dev')
         return 
     ifaces = []
@@ -36,7 +36,7 @@ def get(report):
         try:
             address_path    = '/sys/class/net/' + tmp[0] + '/address'
             iface['mac']    = open(address_path).read().strip()
-        except IOError as e:
+        except IOError:
             report.error('can not open %s' % address_path)
         ifaces.append(iface) 
 

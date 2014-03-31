@@ -8,7 +8,7 @@ def get(report):
 
     try:
         uptime  = int(float(open('/proc/uptime').read().split(' ')[0]))
-    except IOError as e:
+    except IOError:
         report.error('can not open /proc/uptime')
         uptime  = None
 
@@ -52,14 +52,14 @@ def get(report):
             if current_jiffies:
                 start_jiffies   = int(stat[21])
                 proc['age']     = (current_jiffies - start_jiffies) / ticks 
-        except IOError as e:
+        except IOError:
             continue
         try:
             for line in open(proc_dir + '/io', 'r'): 
                 tmp = line.strip().split(':') 
                 if tmp[0] in io_fields:
                     proc[tmp[0]] = int(tmp[1])
-        except IOError as e:
+        except IOError:
             pass
         procs.append(proc)
 

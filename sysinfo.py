@@ -8,6 +8,9 @@ class Report:
 
     def data(self, k, v):
         self.report[k] = v
+    
+    def debug(self, log):
+        print >>sys.stderr, log
 
     def error(self, msg):
         self.report['errors'].append(msg)
@@ -28,7 +31,7 @@ class Sysinfo:
                 continue
             if not self.config.get_bool('mod_' + mod_name, True):
                 continue
-            mod = __import__('mod.' + mod_name, fromlist=[mod_name])
+            mod = __import__('mod.' + mod_name, None, None, [mod_name])
             if hasattr(mod, 'get'):
                 sub_rp = Report(self.config)
                 mod.get(sub_rp)

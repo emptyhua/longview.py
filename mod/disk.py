@@ -16,7 +16,7 @@ def get(report):
                 disk['total']   = stat.f_blocks * stat.f_frsize
                 disk['avail']   = stat.f_bavail * stat.f_frsize
                 disks.append(disk)
-    except IOError as e:
+    except IOError:
         report.error('can not open /proc/mounts')
 
     if len(disks):

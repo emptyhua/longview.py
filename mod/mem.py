@@ -9,5 +9,5 @@ def get(report):
             tmp = line.split(':')
             if tmp[0] in keys:
                 report.data(tmp[0], int(tmp[1].replace('kB', '').strip()))
-    except IOError as e:
+    except IOError:
         report.error('can not open /proc/meminfo')

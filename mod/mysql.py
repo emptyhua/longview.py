@@ -17,11 +17,15 @@ def get(report):
     
 def _get(report, index):
     info    = {}
+    label   = report.config.get_str('mysql_label%d' % index)
     host    = report.config.get_str('mysql_host%d' % index, 'localhost')
     port    = report.config.get_int('mysql_port%d' % index, 3306)
     user    = report.config.get_str('mysql_user%d' % index, 'root')
     passwd  = report.config.get_str('mysql_passwd%d' % index, '')
     
+    if label:
+        info['label'] = label
+
     info['host'] = host
     info['port'] = port
 
@@ -30,8 +34,8 @@ def _get(report, index):
                 port=port,
                 user=user,
                 passwd=passwd)
-    except:
-        info['error'] = 'can\'t connect to mysql server'
+    except Exception, e:
+        info['error'] = 'can\'t connect to mysql server %s' % str(e)
         return info
 
     cursor = db.cursor()

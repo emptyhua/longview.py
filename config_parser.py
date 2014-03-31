@@ -15,7 +15,7 @@ class Config:
                 if len(tmp) < 2:
                     continue
                 self.pool[tmp[0].strip()] = '='.join(tmp[1:]).strip()
-        except IOError as e:
+        except IOError:
             raise ConfigError('can\'t open %s' % config_path)
 
     def get_bool(self, key, default=False):
