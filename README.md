@@ -9,7 +9,7 @@ if (!isset($report)) {
     die('require $report');
 }
 
-if (strcmp($gzip, 'on') === 0) {
+if ($gzip === 'on') {
     $report = gzuncompress($report);
     if ($report === false) {
         die('gzuncompress failed');
