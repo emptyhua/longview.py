@@ -30,6 +30,8 @@ class Config:
         v = self.pool.get(key)
         if v and v.isdigit():    
             return int(v)
+        else:
+            return default
 
     def get_list(self, key, default=None):
         v = self.pool.get(key)
