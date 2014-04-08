@@ -83,7 +83,7 @@ def get(report):
         proc_pool[pool_key]['cpu']      += proc.get('cpu') or 0
         proc_pool[pool_key]['ioread']   += proc.get('read_bytes') or 0
         proc_pool[pool_key]['iowrite']  += proc.get('write_bytes') or 0
-        if proc.get('age') or 0 > proc_pool[pool_key]['age']:
+        if (proc.get('age') or 0) > proc_pool[pool_key]['age']:
             proc_pool[pool_key]['age']  = proc['age']
     
     process_list = [p for p in proc_pool.values() if p['age'] >= 60]

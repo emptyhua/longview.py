@@ -34,19 +34,27 @@ def get(report):
 
     text = response.read()
 
-    server = response.info().getheader('Server')
-    if server:
-        report.data('version', server)
+    server_version = response.info().getheader('Server')
+    if server_version:
+        report.data('version', server_version)
 
     if text.find('server accepts handled requests') == -1:
         report.error('The Nginx status page doesn\'t look right.')
         return
     '''
+    Nginx:
     Active connections: 1 
     server accepts handled requests
      16 16 16 
     Reading: 0 Writing: 1 Waiting: 0 
+
+    Tengine:
+    Active connections: 43222 
+    server accepts handled requests request_time
+     443349 443349 561230 118646127
+    Reading: 4260 Writing: 169 Waiting: 38793 
     '''
+
     find_requests = False
     for line in text.split('\n'):
         if line.startswith('Active connections'):
@@ -58,6 +66,10 @@ def get(report):
             report.data('accepted_cons', tmp[0])
             report.data('handled_cons', tmp[1])
             report.data('requests', tmp[2])
+            if len(tmp) > 3 \
+                and server_version \
+                and server_version.find('Tengine') != -1:
+                report.data('request_time', tmp[3])
             find_requests = False
         elif line.startswith('Reading'):
             tmp = [int(i) for i in line.strip().split(' ') if i.isdigit()]
