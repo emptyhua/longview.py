@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, socket
+import os, socket, re
 
 def get(report):
     sysname, _, release, version, arch = os.uname()
@@ -8,6 +8,22 @@ def get(report):
     report.data('release', release)
     report.data('version', version)
     report.data('arch', arch)
+
+    if os.path.exists('/etc/centos-release'):
+        report.data('dist_short', 'CentOS');
+        dist_full = open('/etc/centos-release').read()
+        report.data('dist_full', dist_full)
+        match = re.findall(r'release ([\d\.]+)', dist_full)
+        if len(match):
+            report.data('dist_version', match[0])
+    elif os.path.exists('/etc/redhat-release'):
+        report.data('dist_short', 'Redhat');
+        dist_full = open('/etc/redhat-release').read()
+        report.data('dist_full', dist_full)
+        match = re.findall(r'release ([\d\.]+)', dist_full)
+        if len(match):
+            report.data('dist_version', match[0])
+
 
     report.data('hostname', socket.gethostname())
     cpu_num     = 0
