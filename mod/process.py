@@ -48,7 +48,7 @@ def get(report):
                 continue
             
             stat = re.split(r'\s+', open(proc_dir + '/stat', 'r').read())
-            proc['cpu']   = int(stat[13]) + int(stat[14])
+            proc['cpu']   = (int(stat[13]) + int(stat[14])) / ticks
             if current_jiffies:
                 start_jiffies   = int(stat[21])
                 proc['age']     = (current_jiffies - start_jiffies) / ticks 
