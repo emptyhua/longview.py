@@ -10,6 +10,7 @@ def get(report):
     system  = 0
     wait    = 0
     idle    = 0
+    steal   = 0
     ticks   = os.sysconf('SC_CLK_TCK') 
 
     try:
@@ -23,6 +24,7 @@ def get(report):
                 system  = int(tmp[3]) + int(tmp[6]) + int(tmp[7])
                 wait    = int(tmp[5])
                 idle    = int(tmp[4])
+                steal   = int(tmp[8])
                 break
     except IOError:
         report.error('can not open /proc/stat')
@@ -33,9 +35,11 @@ def get(report):
     system  /= ticks
     wait    /= ticks
     idle    /= ticks
+    steal   /= ticks
 
     report.data('total', total)
     report.data('user', user)
     report.data('system', system)
     report.data('wait', wait)
     report.data('idle', idle)
+    report.data('steal', steal)
